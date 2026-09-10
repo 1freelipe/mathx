@@ -16,10 +16,10 @@ class MainController extends Controller
     {
         // Form validations
         $request->validate([
-            'check_sum' => 'required_without_all:check_subtraction, check_multiplication, check_division',
-            'check_subtraction' => 'required_without_all:check_sum, check_multiplication, check_division',
-            'check_multiplication' => 'required_without_all:check_sum, check_subtraction, check_division',
-            'check_division' => 'required_without_all:check_sum, check_subctraction, check_multiplication',
+            'check_sum' => 'required_without_all:check_subtraction,check_multiplication,check_division',
+            'check_subtraction' => 'required_without_all:check_sum,check_multiplication,check_division',
+            'check_multiplication' => 'required_without_all:check_sum,check_subtraction,check_division',
+            'check_division' => 'required_without_all:check_sum,check_subtraction,check_multiplication',
             'number_one' => 'required|integer|min:0|max:999|lt:number_two',
             'number_two' => 'required|integer|min:0|max:999',
             'number_exercises' => 'required|integer|min:5|max:50',
@@ -27,10 +27,11 @@ class MainController extends Controller
 
         // get selected operations
         $operations = [];
-        $operations[] = $request->check_sum ? 'sum' : '';
-        $operations[] = $request->check_subtraction ? 'subtraction' : '';
-        $operations[] = $request->check_multiplication ? 'multiplication' : '';
-        $operations[] = $request->check_division ? 'division' : '';
+        if ($request->check_sum) $operations[] = 'sum';
+        if ($request->check_subtraction) $operations[] = 'subtraction';
+        if ($request->check_multiplication) $operations[] = 'multiplication';
+        if ($request->check_division) $operations[] = 'division';
+
 
         // get numbers (min and max)
         $min = $request->number_one;
@@ -61,17 +62,30 @@ class MainController extends Controller
                     break;
 
                 case 'multiplication':
-                    $exercise = "$number1 * $number2 =";
+                    $exercise = "$number1 x $number2 =";
                     $solution = $number1 * $number2;
                     break;
 
                 case 'division':
-                    $exercise = "$number1 / $number2 =";
+                    // avoid division by zero
+                    if ($number2 == 0) {
+                        $exercise = "$number1 : $number2 =";
+                        $solution = 'Indefinido';
+                        break;
+                    }
+                    $exercise = "$number1 : $number2 =";
                     $solution = $number1 / $number2;
                     break;
             }
 
+            // if solution is a float number, round it to 2 decimal plances
+
+            if(is_float($solution)) {
+                $solution = round($solution, 2);
+            }
+
             $exercises[] = [
+                'operation' => $operation,
                 'number_exercise' => $index,
                 'exercise' => $exercise,
                 'solution' => "$exercise $solution",

@@ -66,7 +66,7 @@
                 <!-- parcelas -->
                 <div class="col">
 
-                    <p class="text-info">Parcelas:</p>
+                    <p class="text-info">Intervalo:</p>
 
                     <div class="mb-3">
                         <label for="number_one">Mínimo:</label>
@@ -108,11 +108,13 @@
     {{-- validation errors --}}
     @if($errors->any())
         <div class="container">
-            <dov class="row">
+            <div class="row">
                 <div class="alert alert-danger text-center mt-3">
-                    Por favor, selecione pelo menos uma operação. O número de parcelas deve estar entre 1 e 999. O número de exercícios deve variar entre 5 e 50.
+                    @foreach ($errors->all() as $err)
+                        <p> {{ $err }} </p>
+                    @endforeach
                 </div>
-            </dov>
+            </div>
         </div>
     @endif
 
