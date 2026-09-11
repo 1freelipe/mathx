@@ -85,7 +85,23 @@ class MainController extends Controller
             return redirect()->route('homePage');
         }
 
+        // create file download with exercises
         $exercises = session('exercises');
+        $filename = 'exercises_' . env('APP_NAME') . '_' . date('YmdHms') . '.txt';
+        $content = 'Exercícios de Matemática ' . ( env('APP_NAME')) . "\n";
+
+        foreach($exercises as $ex) {
+            $content .= $ex['number_exercise'] . '. ' . $ex['exercise'] . "\n";
+        }
+
+        // solutions
+        $content .= "\n";
+        $content .= "Soluções\n" . str_repeat('-', 20) . "\n";
+        foreach($exercises as $ex) {
+            $content .= $ex['number_exercise'] . '. ' . $ex['solution'] . "\n";
+        }
+
+        return response($content)->header('Content-Type', 'text/plain')->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
     private function generateExercise($index, $operations, $min, $max): array {
