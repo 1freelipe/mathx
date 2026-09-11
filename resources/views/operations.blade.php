@@ -27,43 +27,18 @@
 
         <div class="row">
 
-            <!-- each operation -->
-            <div class="col-3 display-6 mb-3">
-                <span class="badge bg-dark">1</span>
-                <span>000</span>
-                <span>+</span>
-                <span>000</span>
-            </div>
+        @foreach ($exercises as $ex)
 
             <div class="col-3 display-6 mb-3">
-                <span class="badge bg-dark">2</span>
-                <span>000</span>
-                <span>+</span>
-                <span>000</span>
+                <span class="badge bg-dark">
+                    {{ str_pad($ex['number_exercise'], 2, '0', STR_PAD_LEFT) }}
+                </span>
+                <span>{{ $ex['exercise'] }}</span>
             </div>
 
-            <div class="col-3 display-6 mb-3">
-                <span class="badge bg-dark">3</span>
-                <span>000</span>
-                <span>+</span>
-                <span>000</span>
-            </div>
+        @endforeach
 
-            <div class="col-3 display-6 mb-3">
-                <span class="badge bg-dark">4</span>
-                <span>000</span>
-                <span>+</span>
-                <span>000</span>
-            </div>
-
-            <div class="col-3 display-6 mb-3">
-                <span class="badge bg-dark">4</span>
-                <span>000</span>
-                <span>+</span>
-                <span>000</span>
-            </div>
-
-        </div>
+    </div>
 
         <hr>
 
@@ -73,11 +48,11 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col">
-                <a href="/" class="btn btn-primary px-5">VOLTAR</a>
+                <a href="{{ route('homePage') }}" class="btn btn-primary px-5">VOLTAR</a>
             </div>
             <div class="col text-end">
-                <a href="#" class="btn btn-secondary px-5">DESCARREGAR EXERCÍCIOS</a>
-                <a href="#" class="btn btn-secondary px-5">IMPRIMIR EXERCÍCIOS</a>
+                <a href="{{ route('export') }}" class="btn btn-secondary px-5">BAIXAR EXERCÍCIOS</a>
+                <a href="{{ route('print') }}" class="btn btn-secondary px-5">MOSTRAR EXERCÍCIOS</a>
             </div>
         </div>
     </div>

@@ -43,7 +43,27 @@ class MainController extends Controller
         // generate exercises
         $exercises = [];
         for ($index = 1; $index <= $numberExercises; $index++) {
-            $operation = $operations[array_rand($operations)];
+            $exercises[] = $this->generateExercise($index, $operations, $min, $max);
+        }
+
+
+        // place exercises in session
+        $request->session()->put('exercises', $exercises);
+
+        return view('operations', ['exercises' => $exercises]);
+    }
+
+    public function printExercises() {
+        echo 'Hello';
+    }
+
+    public function exportExercises()
+    {
+        echo 'Exportar exercícios para um arquivo de testes';
+    }
+
+    private function generateExercise($index, $operations, $min, $max): array {
+        $operation = $operations[array_rand($operations)];
             $number1 = rand($min, $max);
             $number2 = rand($min, $max);
 
@@ -79,28 +99,15 @@ class MainController extends Controller
             }
 
             // if solution is a float number, round it to 2 decimal plances
-
             if (is_float($solution)) {
                 $solution = round($solution, 2);
             }
 
-            $exercises[] = [
+            return [
                 'operation' => $operation,
                 'number_exercise' => $index,
                 'exercise' => $exercise,
                 'solution' => "$exercise $solution",
             ];
-        }
-
-        return view('operations', ['exercises' => $exercises]);
-    }
-
-    public function printExercises() {
-        echo 'Hello';
-    }
-
-    public function exportExercises()
-    {
-        echo 'Exportar exercícios para um arquivo de testes';
     }
 }
