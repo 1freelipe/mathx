@@ -104,7 +104,7 @@ class MainController extends Controller
         return response($content)->header('Content-Type', 'text/plain')->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
-    private function generateExercise($index, $operations, $min, $max): array {
+    private function generateExercise(int $index, array $operations, int $min, int $max): array {
         $operation = $operations[array_rand($operations)];
             $number1 = rand($min, $max);
             $number2 = rand($min, $max);
