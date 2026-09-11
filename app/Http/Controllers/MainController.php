@@ -12,7 +12,7 @@ class MainController extends Controller
         return view('home');
     }
 
-    public function generateExercises(Request $request)
+    public function generateExercises(Request $request): View
     {
         // Form validations
         $request->validate([
@@ -80,7 +80,7 @@ class MainController extends Controller
 
             // if solution is a float number, round it to 2 decimal plances
 
-            if(is_float($solution)) {
+            if (is_float($solution)) {
                 $solution = round($solution, 2);
             }
 
@@ -92,12 +92,11 @@ class MainController extends Controller
             ];
         }
 
-        dd($exercises);
+        return view('operations', ['exercises' => $exercises]);
     }
 
-    public function printExercises()
-    {
-        echo 'Apresentação dos exercícios';
+    public function printExercises() {
+        echo 'Hello';
     }
 
     public function exportExercises()
