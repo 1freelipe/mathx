@@ -54,12 +54,38 @@ class MainController extends Controller
     }
 
     public function printExercises() {
-        echo 'Hello';
+        // check exercises are in session
+        if(!session()->has('exercises')) {
+            return redirect()->route('homePage');
+        }
+
+        // take exercises in session
+        $exercises = session('exercises');
+
+        echo '<pre>';
+        echo '<h1>Exercícios de Matématica ('. env('APP_NAME') .')</h1>';
+        echo '<hr>';
+
+        foreach($exercises as $ex)
+        echo '<h2><small>' . $ex['number_exercise'] . '. </small>' . $ex['exercise'] . '</h2>';
+
+        // solutions
+        echo '<hr>';
+        echo '<small>Soluções</small><br>';
+
+        foreach ($exercises as $ex) {
+            echo '<small>' . $ex['number_exercise'] . '. ' . $ex['solution'] . '</small><br>';
+        }
     }
 
     public function exportExercises()
     {
-        echo 'Exportar exercícios para um arquivo de testes';
+        // check if exercises are in session
+        if(!session()->has('exercises')) {
+            return redirect()->route('homePage');
+        }
+
+        $exercises = session('exercises');
     }
 
     private function generateExercise($index, $operations, $min, $max): array {
@@ -105,7 +131,7 @@ class MainController extends Controller
 
             return [
                 'operation' => $operation,
-                'number_exercise' => $index,
+                'number_exercise' => str_pad($index, 2, '0', STR_PAD_LEFT),
                 'exercise' => $exercise,
                 'solution' => "$exercise $solution",
             ];

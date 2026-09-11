@@ -31,7 +31,7 @@
 
             <div class="col-3 display-6 mb-3">
                 <span class="badge bg-dark">
-                    {{ str_pad($ex['number_exercise'], 2, '0', STR_PAD_LEFT) }}
+                    {{ $ex['number_exercise'] }}
                 </span>
                 <span>{{ $ex['exercise'] }}</span>
             </div>
